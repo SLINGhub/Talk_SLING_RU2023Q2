@@ -1,0 +1,7 @@
+project:
+  title: "Talk_SLING_RU2023Q2"
+  type: website
+  output-dir: docs
+
+editor: visual
+

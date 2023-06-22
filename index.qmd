@@ -1,0 +1,254 @@
+---
+format: 
+  revealjs:
+    theme: [default, custom.css]
+    slide-number: true
+    multiplex: true
+    transition: fade
+    background-transition: fade
+    smaller: false
+    margin: 0.25
+    preview-links: auto
+    pointer:
+      pointerSize: 24
+      color: '#32cd32'
+    highlight-style: ayu-mirage
+    revealjs-plugins:
+      - pointer
+---
+
+##  {.title}
+
+```{r }
+#| echo: false
+library(tidyverse)
+library(knitr)
+library(here)
+library(plotly)
+library(patchwork)
+library(midar)
+library(plotly)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+theme_set(theme_gray(base_size = 18))
+
+data_path <- system.file("extdata", "Example_MHQuant_1.csv", package = "midar", mustWork = TRUE)
+meta_path <- system.file("extdata", "Example_Metadata_1.xlsm", package = "midar", mustWork = TRUE)
+
+```
+
+::: {style="font-size: 172px; font-weight: 400; color: #024061"}
+Data Collaboration
+:::
+
+::: {style="font-size: 48px; font-weight: 100; color: #3D7491"}
+New Tools from the R world and SLING 
+:::
+
+<br/><br/>
+
+::: {style="font-size: 28px; font-weight: 100; color: #3D7491"}
+Bo Burla - Research Update Q2 2023
+:::
+
+::: notes
+Hi everybody! Would like to introduce MiDAR
+:::
+
+## An Experiment
+
+::: columns
+::: {.column width="50%"}
+-   Process
+-   Explore
+-   Collaborate
+-   Share
+:::
+
+::: {.column width="50%"}
+![](images/QR.png){fig-align="center"}
+:::
+:::
+
+::: {style="font-size: 28px; font-weight: 100; color: #3D7491; text-align: center !important;"}
+View these slides (live) on your device\
+<https://slinghub.github.io/Talk_SLING_RU2023Q2>
+:::
+
+## What actually is R and RStudio ? {.smaller}
+
+<br/>
+
+::: columns
+::: {.column width="50%"}
+**R**
+
+-   Statistical Programming Language
+
+-   V1.0 in February 2000
+
+-   R packages
+
+    -   CRAN (19'000)
+
+    -   Bioconductor (genomics)
+
+    -   GitHub
+
+-   FDA: approved R
+
+-   R Foundation (non-profit)
+:::
+
+::: {.column width="50%"}
+**RStudio and Posit PBC (~~RStudio Inc.~~)**
+
+-   Graphical Interface for R (IDE)
+
+-   Tidyverse
+
+-   Shiny
+
+-   RMarkdown -\> R/Notebooks
+
+-   For-Profit
+:::
+:::
+
+## Quarto - creating content...
+
+![<https://quarto.org>](images/quarto.png)
+
+## MiDAR - An R package
+
+::: columns
+::: {.column width="50%" style="font-size: 36px;"}
+-   Data and Metadata
+-   Processing
+-   Exploration (QC)
+-   Reporting <br/><br/>
+-   Validated
+-   Traceable
+-   Shareable
+-   Accessible
+:::
+
+::: {.column width="50%"}
+![[https://slinghub.github.io/midar/](https://slinghub.github.io/midar/){text-align="left"}](images/MiDAR.png)
+:::
+:::
+
+## Basic Data Processing Workflow {auto-animate="true"}
+
+```{r}
+#| echo: true
+#| output: false
+#| code-line-numbers: 3|5|6|8|9|11|12-16
+library(midar)
+
+panelA <- MidarExperiment()
+
+panelA <- read_masshunter_csv(panelA, file_dir_names = data_path)
+panelA <- read_msorganizer_xlm(panelA, filename = meta_path)
+
+panelA <- normalize_by_istd(panelA)
+panelA <- quantitate_by_istd(panelA)
+
+panelA <- calculate_qc_metrics(panelA)
+panelA <- apply_qc_filter(panelA,
+                          CV_BQC_max = 20,
+                          SB_RATIO_min = 5,
+                          R2_min = 0.8,
+                          RQC_CURVE = 1)
+```
+
+## Basic Data Processing Workflow {auto-animate="true"}
+
+```{r}
+#| echo: true
+#| output: false
+#| message: false
+panelA <- read_masshunter_csv(panelA, file_dir_names = data_path)
+panelA <- read_msorganizer_xlm(panelA, filename = meta_path)
+
+panelA <- normalize_by_istd(panelA)
+panelA <- quantitate_by_istd(panelA)
+
+panelA <- calculate_qc_metrics(panelA)
+panelA <- apply_qc_filter(panelA,
+                          CV_BQC_max = 20,
+                          SB_RATIO_min = 5,
+                          R2_min = 0.8, RQC_CURVE = 1)
+```
+
+::: {test}
+![](images/Output1.png){width="100%"}
+:::
+
+## Drift and Batch Correction
+
+```{r}
+#| echo: true
+#| output: false
+#| message: false
+#| code-line-numbers: "|3|4|5-6|7-8"
+panelA <- corr_drift_loess(
+  data = panelA,
+  qc_types = "BQC",
+  within_batch = TRUE, 
+  apply_conditionally = TRUE,
+  min_sample_cv_ratio_before_after = 1,
+  log2_transform = TRUE,
+  span = 0.75)
+```
+
+::: {test}
+![](images/Output2.png){width="100%"}
+:::
+
+## QC plots {.scrollable .smaller}
+
+```{r}
+#| echo: true
+#| fig-width: 16
+#| fig-height: 10
+plot_runscatter(data = panelA, 
+                y_var = "Intensity", 
+                feature_filter = "^Cer|Hex3Cer|GM3", 
+                cap_values = TRUE, 
+                show_batches = TRUE,
+                outputPDF = FALSE, 
+                annot_scale = 1.9, point_size = 4) 
+```
+
+## Interactive Plots {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 6
+#| fig-width: 5
+#| fig-align: center
+
+plotA <- plot_pca_qc(data = panelA, variable = "Concentration", 
+                        log_transform = FALSE, dim_x = 1, dim_y = 2)
+ggplotly(plotA)
+```
+
+## Share data and process
+
+```{r}
+#| echo: true
+panelA
+```
+
+
+
+## QA/QC ... of scripts and tools!
+
+-   At design
+-   At programming
+-   Make packages
+<br/><br/>
+-   **Automated testing**
+
+## Thank You 🙂

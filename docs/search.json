@@ -1,0 +1,93 @@
+[
+  {
+    "objectID": "index.html#section",
+    "href": "index.html#section",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "",
+    "text": "Data Collaboration\n\n\nNew Tools from the R world and SLING\n\n\n\nBo Burla - Research Update Q2 2023\n\n\nHi everybody! Would like to introduce MiDAR"
+  },
+  {
+    "objectID": "index.html#an-experiment",
+    "href": "index.html#an-experiment",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "An Experiment",
+    "text": "An Experiment\n\n\n\nProcess\nExplore\nCollaborate\nShare\n\n\n\n\n\n\n\n\n\n\nView these slides (live) on your device\nhttps://slinghub.github.io/Talk_SLING_RU2023Q2"
+  },
+  {
+    "objectID": "index.html#what-actually-is-r-and-rstudio",
+    "href": "index.html#what-actually-is-r-and-rstudio",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "What actually is R and RStudio ?",
+    "text": "What actually is R and RStudio ?\n\n\n\nR\n\nStatistical Programming Language\nV1.0 in February 2000\nR packages\n\nCRAN (19’000)\nBioconductor (genomics)\nGitHub\n\nFDA: approved R\nR Foundation (non-profit)\n\n\nRStudio and Posit PBC (RStudio Inc.)\n\nGraphical Interface for R (IDE)\nTidyverse\nShiny\nRMarkdown -> R/Notebooks\nFor-Profit"
+  },
+  {
+    "objectID": "index.html#quarto---creating-content",
+    "href": "index.html#quarto---creating-content",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "Quarto - creating content…",
+    "text": "Quarto - creating content…\n\nhttps://quarto.org"
+  },
+  {
+    "objectID": "index.html#midar---an-r-package",
+    "href": "index.html#midar---an-r-package",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "MiDAR - An R package",
+    "text": "MiDAR - An R package\n\n\n\nData and Metadata\nProcessing\nExploration (QC)\nReporting \nValidated\nTraceable\nShareable\nAccessible\n\n\n\n\n\nhttps://slinghub.github.io/midar/"
+  },
+  {
+    "objectID": "index.html#basic-data-processing-workflow",
+    "href": "index.html#basic-data-processing-workflow",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "Basic Data Processing Workflow",
+    "text": "Basic Data Processing Workflow\n\nlibrary(midar)\n\npanelA <- MidarExperiment()\n\npanelA <- read_masshunter_csv(panelA, file_dir_names = data_path)\npanelA <- read_msorganizer_xlm(panelA, filename = meta_path)\n\npanelA <- normalize_by_istd(panelA)\npanelA <- quantitate_by_istd(panelA)\n\npanelA <- calculate_qc_metrics(panelA)\npanelA <- apply_qc_filter(panelA,\n                          CV_BQC_max = 20,\n                          SB_RATIO_min = 5,\n                          R2_min = 0.8,\n                          RQC_CURVE = 1)"
+  },
+  {
+    "objectID": "index.html#basic-data-processing-workflow-1",
+    "href": "index.html#basic-data-processing-workflow-1",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "Basic Data Processing Workflow",
+    "text": "Basic Data Processing Workflow\n\npanelA <- read_masshunter_csv(panelA, file_dir_names = data_path)\npanelA <- read_msorganizer_xlm(panelA, filename = meta_path)\n\npanelA <- normalize_by_istd(panelA)\npanelA <- quantitate_by_istd(panelA)\n\npanelA <- calculate_qc_metrics(panelA)\npanelA <- apply_qc_filter(panelA,\n                          CV_BQC_max = 20,\n                          SB_RATIO_min = 5,\n                          R2_min = 0.8, RQC_CURVE = 1)"
+  },
+  {
+    "objectID": "index.html#drift-and-batch-correction",
+    "href": "index.html#drift-and-batch-correction",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "Drift and Batch Correction",
+    "text": "Drift and Batch Correction\n\npanelA <- corr_drift_loess(\n  data = panelA,\n  qc_types = \"BQC\",\n  within_batch = TRUE, \n  apply_conditionally = TRUE,\n  min_sample_cv_ratio_before_after = 1,\n  log2_transform = TRUE,\n  span = 0.75)"
+  },
+  {
+    "objectID": "index.html#qc-plots",
+    "href": "index.html#qc-plots",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "QC plots",
+    "text": "QC plots\n\nplot_runscatter(data = panelA, \n                y_var = \"Intensity\", \n                feature_filter = \"^Cer|Hex3Cer|GM3\", \n                cap_values = TRUE, \n                show_batches = TRUE,\n                outputPDF = FALSE, \n                annot_scale = 1.9, point_size = 4) \n\n[1] \"Plotting 3 pages...\"\n[1] \"page 1\"\n\n\n\n\n\n[1] \"page 2\"\n\n\n\n\n\n[1] \"page 3\""
+  },
+  {
+    "objectID": "index.html#interactive-plots",
+    "href": "index.html#interactive-plots",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "Interactive Plots",
+    "text": "Interactive Plots\n\nplotA <- plot_pca_qc(data = panelA, variable = \"Concentration\", \n                        log_transform = FALSE, dim_x = 1, dim_y = 2)\nggplotly(plotA)"
+  },
+  {
+    "objectID": "index.html#share-data-and-process",
+    "href": "index.html#share-data-and-process",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "Share data and process",
+    "text": "Share data and process\n\npanelA\n\n\n MidarExperiment \n \n   Data:  \n   • Samples:  215 \n   • Features:   428 \n \n   Metadata:  \n   • Sample annotation:  ✓ \n   • Feature annotation:  ✓ \n   • Internal standard annotation:  ✓ \n   • Response curves annotation:  ✓ \n   • Study samples annotation:  ✗ \n \n   Processing status:  Adjusted Quantitated Data \n \n   Processing:  \n   • ISTD normalized:  ✓ \n   • ISTD quantitated:  ✓ \n   • Drift corrected:  ✓ \n   • Batch corrected:  ✗"
+  },
+  {
+    "objectID": "index.html#qaqc-of-scripts-and-tools",
+    "href": "index.html#qaqc-of-scripts-and-tools",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "QA/QC … of scripts and tools!",
+    "text": "QA/QC … of scripts and tools!\n\nAt design\nAt programming\nMake packages \nAutomated testing"
+  },
+  {
+    "objectID": "index.html#thank-you",
+    "href": "index.html#thank-you",
+    "title": "Talk_SLING_RU2023Q2",
+    "section": "Thank You 🙂",
+    "text": "Thank You 🙂"
+  }
+]
