@@ -56,11 +56,11 @@
     "text": "Drift and Batch Correction\n\npanelA <- corr_drift_loess(\n  data = panelA,\n  qc_types = \"BQC\",\n  within_batch = TRUE, \n  apply_conditionally = TRUE,\n  min_sample_cv_ratio_before_after = 1,\n  log2_transform = TRUE,\n  span = 0.75)"
   },
   {
-    "objectID": "index.html#qc-plots",
-    "href": "index.html#qc-plots",
+    "objectID": "index.html#plots-as-web-pages",
+    "href": "index.html#plots-as-web-pages",
     "title": "Talk_SLING_RU2023Q2",
-    "section": "QC plots",
-    "text": "QC plots\n\nplot_runscatter(data = panelA, \n                y_var = \"Intensity\", \n                feature_filter = \"^Cer|Hex3Cer|GM3\", \n                cap_values = TRUE, \n                show_batches = TRUE,\n                outputPDF = FALSE, \n                annot_scale = 1.9, point_size = 4) \n\n[1] \"Plotting 3 pages...\"\n[1] \"page 1\"\n\n\n\n\n\n[1] \"page 2\"\n\n\n\n\n\n[1] \"page 3\""
+    "section": "Plots as web pages",
+    "text": "Plots as web pages\n\nplot_runscatter(data = panelA, \n                y_var = \"Intensity\", \n                feature_filter = \"^Cer|Hex3Cer|GM3\", \n                cap_values = TRUE, \n                show_batches = TRUE,\n                outputPDF = FALSE, \n                annot_scale = 1.9, point_size = 4) \n\n[1] \"Plotting 3 pages...\"\n[1] \"page 1\"\n\n\n\n\n\n[1] \"page 2\"\n\n\n\n\n\n[1] \"page 3\""
   },
   {
     "objectID": "index.html#interactive-plots",
@@ -74,7 +74,7 @@
     "href": "index.html#share-data-and-process",
     "title": "Talk_SLING_RU2023Q2",
     "section": "Share data and process",
-    "text": "Share data and process\n\npanelA\n\n\n MidarExperiment \n \n   Data:  \n   • Samples:  215 \n   • Features:   428 \n \n   Metadata:  \n   • Sample annotation:  ✓ \n   • Feature annotation:  ✓ \n   • Internal standard annotation:  ✓ \n   • Response curves annotation:  ✓ \n   • Study samples annotation:  ✗ \n \n   Processing status:  Adjusted Quantitated Data \n \n   Processing:  \n   • ISTD normalized:  ✓ \n   • ISTD quantitated:  ✓ \n   • Drift corrected:  ✓ \n   • Batch corrected:  ✗"
+    "text": "Share data and process\n\ninfo(panelA)\nsave(panelA, \"D:/my-data/\")\n\n\n\n\n MidarExperiment \n \n   Data:  \n   • Samples:  215 \n   • Features:   428 \n \n   Metadata:  \n   • Sample annotation:  ✓ \n   • Feature annotation:  ✓ \n   • Internal standard annotation:  ✓ \n   • Response curves annotation:  ✓ \n   • Study samples annotation:  ✗ \n \n   Processing status:  Adjusted Quantitated Data \n \n   Processing:  \n   • ISTD normalized:  ✓ \n   • ISTD quantitated:  ✓ \n   • Drift corrected:  ✓ \n   • Batch corrected:  ✗"
   },
   {
     "objectID": "index.html#qaqc-of-scripts-and-tools",

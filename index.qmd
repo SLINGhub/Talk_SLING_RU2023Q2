@@ -210,12 +210,12 @@ panelA <- corr_drift_loess(
 ![](images/Output2.png){width="100%"}
 :::
 
-## QC plots {.scrollable .smaller}
+## Plots as web pages {.scrollable .smaller}
 
 ```{r}
 #| echo: true
 #| fig-width: 16
-#| fig-height: 10
+#| fig-height: 12
 plot_runscatter(data = panelA, 
                 y_var = "Intensity", 
                 feature_filter = "^Cer|Hex3Cer|GM3", 
@@ -230,7 +230,7 @@ plot_runscatter(data = panelA,
 ```{r}
 #| echo: true
 #| fig-height: 6
-#| fig-width: 5
+#| fig-width: 8
 #| fig-align: center
 
 plotA <- plot_pca_qc(data = panelA, variable = "Concentration", 
@@ -242,7 +242,17 @@ ggplotly(plotA)
 
 ```{r}
 #| echo: true
+#| output: false
+#| eval: false
+info(panelA)
+save(panelA, "D:/my-data/")
+```
+
+```{r}
+#| echo: false
+#| output: true
 panelA
+
 ```
 
 ## QA/QC ... of scripts and tools!
