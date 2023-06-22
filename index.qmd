@@ -117,11 +117,10 @@ View these slides (live) on your device\
 
 ## Quarto - creating content...
 
-
 ![](images/webquart.png){width="70%"}
 
 ::: {style="font-size: 24px; font-weight: 100; color: #3D7491"}
-https://quarto.org
+<https://quarto.org>
 :::
 
 ## MiDAR - An R package
