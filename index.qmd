@@ -42,7 +42,7 @@ Data Collaboration
 :::
 
 ::: {style="font-size: 48px; font-weight: 100; color: #3D7491"}
-New Tools from the R world and SLING 
+New Tools from the R world and SLING
 :::
 
 <br/><br/>
@@ -117,7 +117,14 @@ View these slides (live) on your device\
 
 ## Quarto - creating content...
 
-![<https://quarto.org>](images/quarto.png)
+::: {quarto}
+
+![](images/quarto.jpg){width="30%"}
+:::
+
+::: {style="font-size: 24px; font-weight: 100; color: #3D7491"}
+https://quarto.org
+:::
 
 ## MiDAR - An R package
 
@@ -241,14 +248,11 @@ ggplotly(plotA)
 panelA
 ```
 
-
-
 ## QA/QC ... of scripts and tools!
 
 -   At design
 -   At programming
--   Make packages
-<br/><br/>
+-   Make packages <br/><br/>
 -   **Automated testing**
 
 ## Thank You 🙂
